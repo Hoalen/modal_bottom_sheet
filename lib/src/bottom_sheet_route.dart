@@ -26,6 +26,7 @@ Future<T?> showCustomModalBottomSheet<T>({
   bool enableDrag = true,
   Duration? duration,
   RouteSettings? settings,
+  double? closeProgressThreshold,
 }) async {
   assert(debugCheckHasMediaQuery(context));
   assert(debugCheckHasMaterialLocalizations(context));
@@ -50,11 +51,12 @@ Future<T?> showCustomModalBottomSheet<T>({
     animationCurve: animationCurve,
     duration: duration,
     settings: settings,
+    closeProgressThreshold: closeProgressThreshold,
   ));
   return result;
 }
 
-class ModalBottomSheetRoute<T> extends PopupRoute<T> {
+class ModalBottomSheetRoute<T> extends PageRoute<T> {
   final double? closeProgressThreshold;
 
   final WidgetWithChildBuilder? containerBuilder;
@@ -65,7 +67,7 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
   final bool isDismissible;
   final bool enableDrag;
   final ScrollController? scrollController;
-  final Duration? duration;
+  final Duration duration;
 
   final AnimationController? secondAnimationController;
 
@@ -88,10 +90,11 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
     required this.expanded,
     this.bounce = false,
     this.animationCurve,
-    this.duration,
+    Duration? duration,
     RouteSettings? settings,
     ImageFilter? filter,
-  }) : super(
+  })  : duration = duration ?? _bottomSheetDuration,
+        super(
           settings: settings,
           filter: filter,
         );
@@ -103,7 +106,13 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
   bool get barrierDismissible => isDismissible;
 
   @override
-  Duration get transitionDuration => duration ?? _bottomSheetDuration;
+  bool get maintainState => true; // keep in memory when not active (#252)
+
+  @override
+  bool get opaque => false; //transparency
+
+  @override
+  Duration get transitionDuration => duration;
 
   bool get _hasScopedWillPopCallback => hasScopedWillPopCallback;
 
@@ -153,6 +162,40 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
   ) {
     return child;
   }
+}
+
+/// A modal route that replaces the entire screen.
+abstract class PageRoute<T> extends ModalRoute<T> {
+  /// {@template flutter.widgets.PageRoute.fullscreenDialog}
+  /// Whether this page route is a full-screen dialog.
+  ///
+  /// In Material and Cupertino, being fullscreen has the effects of making
+  /// the app bars have a close button instead of a back button. On
+  /// iOS, dialogs transitions animate differently and are also not closeable
+  /// with the back swipe gesture.
+  /// {@endtemplate}
+  final bool fullscreenDialog;
+
+  /// Creates a modal route that replaces the entire screen.
+  PageRoute({
+    super.settings,
+    super.filter,
+    this.fullscreenDialog = false,
+  });
+
+  @override
+  bool get barrierDismissible => false;
+
+  @override
+  bool get opaque => true;
+
+  @override
+  bool canTransitionFrom(TransitionRoute<dynamic> previousRoute) =>
+      previousRoute is PageRoute;
+
+  @override
+  bool canTransitionTo(TransitionRoute<dynamic> nextRoute) =>
+      nextRoute is PageRoute;
 }
 
 class _ModalBottomSheet<T> extends StatefulWidget {

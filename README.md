@@ -2,10 +2,6 @@
 
 # Flutter Modal Bottom Sheet
 
-**BREAKING CHANGE IN 1.0.0** 
-
-In the `builder` param remove `scrollController` and use `ModalScrollController.of(context)` instead to access the modal's scrollController. Check the CHANGELOG for more information
-
 [![Awesome Flutter](https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square)](https://github.com/Solido/awesome-flutter)
 [![Pub](https://img.shields.io/pub/v/modal_bottom_sheet.svg?logo=flutter&color=blue&style=flat-square)](https://pub.dev/packages/modal_bottom_sheet)
 
@@ -26,6 +22,7 @@ Inspired by `showModalBottomSheet`, it completes with some must-need features:
 - Support for inside scrollview + dragging down to close (`showModalBottomSheet` won't work correctly with scrollviews. 
 - Support for `WillPopScope` to prevent closing the dialog.
 - Support for scroll to top when tapping status bar (iOS only)
+- Support for top SafeArea (not supported by showModalBottomSheet)
 - Cupertino modal bottom sheet
 - Create custom modal bottom sheet
 

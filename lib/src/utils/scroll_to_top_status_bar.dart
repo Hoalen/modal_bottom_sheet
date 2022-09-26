@@ -15,15 +15,10 @@ class ScrollToTopStatusBarHandler extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ScrollToTopStatusBarState createState() => _ScrollToTopStatusBarState();
+  ScrollToTopStatusBarState createState() => ScrollToTopStatusBarState();
 }
 
-class _ScrollToTopStatusBarState extends State<ScrollToTopStatusBarHandler> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class ScrollToTopStatusBarState extends State<ScrollToTopStatusBarHandler> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -46,6 +41,11 @@ class _ScrollToTopStatusBarState extends State<ScrollToTopStatusBarHandler> {
         ),
       ],
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   void _handleStatusBarTap(BuildContext context) {
