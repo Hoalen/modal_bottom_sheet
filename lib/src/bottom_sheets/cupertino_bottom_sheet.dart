@@ -508,11 +508,6 @@ class _CupertinoScaffoldState extends State<CupertinoScaffold>
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   void initState() {
     animationController =
         AnimationController(duration: Duration(milliseconds: 350), vsync: this);

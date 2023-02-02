@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../modal_bottom_sheet.dart';
-import 'bottom_sheet_route.dart';
+import '../modal_bottom_sheet.dart' as mbs;
 
 class MaterialWithModalsPageRoute<T> extends MaterialPageRoute<T> {
+  mbs.ModalBottomSheetRoute? _nextModalRoute;
+
   /// Construct a MaterialPageRoute whose contents are defined by [builder].
   ///
   /// The values of [builder], [maintainState], and [fullScreenDialog] must not
@@ -19,38 +20,6 @@ class MaterialWithModalsPageRoute<T> extends MaterialPageRoute<T> {
             fullscreenDialog: fullscreenDialog,
             builder: builder,
             maintainState: maintainState);
-
-  ModalBottomSheetRoute? _nextModalRoute;
-
-  @override
-  bool canTransitionTo(TransitionRoute<dynamic> nextRoute) {
-    // Don't perform outgoing animation if the next route is a fullscreen dialog.
-    return (nextRoute is MaterialPageRoute && !nextRoute.fullscreenDialog) ||
-        (nextRoute is CupertinoPageRoute && !nextRoute.fullscreenDialog) ||
-        (nextRoute is MaterialWithModalsPageRoute &&
-            !nextRoute.fullscreenDialog) ||
-        (nextRoute is ModalBottomSheetRoute);
-  }
-
-  @override
-  void didChangeNext(Route? nextRoute) {
-    if (nextRoute is ModalBottomSheetRoute) {
-      _nextModalRoute = nextRoute;
-    }
-
-    super.didChangeNext(nextRoute);
-  }
-
-  @override
-  void didPopNext(Route nextRoute) {
-    super.didPopNext(nextRoute);
-  }
-
-  @override
-  bool didPop(T? result) {
-    _nextModalRoute = null;
-    return super.didPop(result);
-  }
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
@@ -74,5 +43,30 @@ class MaterialWithModalsPageRoute<T> extends MaterialPageRoute<T> {
 
     return theme.buildTransitions<T>(
         this, context, animation, secondaryAnimation, child);
+  }
+
+  @override
+  bool canTransitionTo(TransitionRoute<dynamic> nextRoute) {
+    // Don't perform outgoing animation if the next route is a fullscreen dialog.
+    return (nextRoute is MaterialPageRoute && !nextRoute.fullscreenDialog) ||
+        (nextRoute is CupertinoPageRoute && !nextRoute.fullscreenDialog) ||
+        (nextRoute is MaterialWithModalsPageRoute &&
+            !nextRoute.fullscreenDialog) ||
+        (nextRoute is mbs.ModalBottomSheetRoute);
+  }
+
+  @override
+  void didChangeNext(Route? nextRoute) {
+    if (nextRoute is mbs.ModalBottomSheetRoute) {
+      _nextModalRoute = nextRoute;
+    }
+
+    super.didChangeNext(nextRoute);
+  }
+
+  @override
+  bool didPop(T? result) {
+    _nextModalRoute = null;
+    return super.didPop(result);
   }
 }

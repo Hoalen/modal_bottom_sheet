@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../modal_bottom_sheet.dart';
-import '../bottom_sheet_route.dart';
+import '../../modal_bottom_sheet.dart' as mbs;
 
 const Radius kDefaultBarTopRadius = Radius.circular(15);
 
@@ -32,7 +31,7 @@ Future<T?> showBarModalBottomSheet<T>({
   assert(debugCheckHasMediaQuery(context));
   assert(debugCheckHasMaterialLocalizations(context));
   final result = await Navigator.of(context, rootNavigator: useRootNavigator)
-      .push(ModalBottomSheetRoute<T>(
+      .push(mbs.ModalBottomSheetRoute<T>(
     builder: builder,
     bounce: bounce,
     closeProgressThreshold: closeProgressThreshold,
