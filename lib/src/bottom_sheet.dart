@@ -210,14 +210,12 @@ class ModalBottomSheetState extends State<ModalBottomSheet>
       );
     }
 
-    final mediaQuery = MediaQuery.of(context);
-
     child = AnimatedBuilder(
       animation: widget.animationController,
       builder: (context, Widget? child) {
         assert(child != null);
         final animationValue = animationCurve.transform(
-            mediaQuery.accessibleNavigation
+            MediaQuery.accessibleNavigationOf(context)
                 ? 1.0
                 : widget.animationController.value);
 

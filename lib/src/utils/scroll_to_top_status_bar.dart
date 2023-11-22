@@ -29,7 +29,7 @@ class ScrollToTopStatusBarState extends State<ScrollToTopStatusBarHandler> {
           top: 0,
           left: 0,
           right: 0,
-          height: MediaQuery.of(context).padding.top,
+          height: MediaQuery.paddingOf(context).top,
           child: Builder(
             builder: (context) => GestureDetector(
               behavior: HitTestBehavior.opaque,

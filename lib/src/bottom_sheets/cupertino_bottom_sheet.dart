@@ -160,7 +160,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    final paddingTop = MediaQuery.of(context).padding.top;
+    final paddingTop = MediaQuery.paddingOf(context).top;
     final distanceWithScale = (paddingTop + _kPreviousPageVisibleOffset) * 0.9;
     final offsetY = secondaryAnimation.value * (paddingTop - distanceWithScale);
     final scale = 1 - secondaryAnimation.value / 10;
@@ -308,7 +308,7 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topSafeAreaPadding = MediaQuery.of(context).padding.top;
+    final topSafeAreaPadding = MediaQuery.paddingOf(context).top;
     final topPadding = _kPreviousPageVisibleOffset + topSafeAreaPadding;
 
     final shadow = this.shadow ?? _kDefaultBoxShadow;
@@ -359,7 +359,7 @@ class _CupertinoModalTransition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var startRoundCorner = 0.0;
-    final paddingTop = MediaQuery.of(context).padding.top;
+    final paddingTop = MediaQuery.paddingOf(context).top;
     if (Theme.of(context).platform == TargetPlatform.iOS && paddingTop > 20) {
       startRoundCorner = 38.5;
       //https://kylebashour.com/posts/finding-the-real-iphone-x-corner-radius
